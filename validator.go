@@ -12,6 +12,12 @@ type Validator struct {
 	Errors []error
 }
 
+func (v *Validator) Range(min int, max int) *Validator {
+	v.Min(min)
+	v.Max(max)
+	return v
+}
+
 func (v *Validator) Max(max int) *Validator {
 	switch reflect.ValueOf(v.Object).Kind() {
 	case reflect.Array, reflect.String:
