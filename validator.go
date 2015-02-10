@@ -5,6 +5,7 @@ import (
 	// "fmt"
 	"reflect"
 	"strconv"
+	"time"
 )
 
 type Validator struct {
@@ -15,6 +16,30 @@ type Validator struct {
 func (v *Validator) Range(min int, max int) *Validator {
 	v.Min(min)
 	v.Max(max)
+	return v
+}
+
+func (v *Validator) IsTimeBefore(t time.Time) *Validator {
+	if dTime, ok := v.Object.(time.Time); ok {
+		if dTime.After(t) {
+			v.Add("time should be before " + t.String())
+		}
+	} else {
+		v.Add("cannot be applied on this object")
+	}
+
+	return v
+}
+
+func (v *Validator) IsTimeAfter(t time.Time) *Validator {
+	if dTime, ok := v.Object.(time.Time); ok {
+		if dTime.Before(t) {
+			v.Add("time should be after " + t.String())
+		}
+	} else {
+		v.Add("cannot be applied on this object")
+	}
+
 	return v
 }
 

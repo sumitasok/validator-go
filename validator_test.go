@@ -4,6 +4,7 @@ import (
 	// "fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"time"
 )
 
 type tObj struct {
@@ -21,18 +22,32 @@ func TestValidator(t *testing.T) {
 	assert.Error(v1.Error())
 
 	v2 := On("Sumit").Required().Min(7)
-	assert.Equal("minimum 7 characters required", v2.Error().Error())
+	assert.Equal("minimum 7 characters required",
+		v2.Error().Error())
 	// replicate errors for more types
 
 	v3 := On("classified").Required().Max(7)
-	assert.Equal("maximum 7 characters allowed", v3.Error().Error())
+	assert.Equal("maximum 7 characters allowed",
+		v3.Error().Error())
 
 	v4max := On("classified").Required().Range(3, 7)
-	assert.Equal("maximum 7 characters allowed", v4max.Error().Error())
+	assert.Equal("maximum 7 characters allowed",
+		v4max.Error().Error())
 	v4min := On("classified").Required().Range(13, 17)
-	assert.Equal("minimum 13 characters required", v4min.Error().Error())
+	assert.Equal("minimum 13 characters required",
+		v4min.Error().Error())
 
 	v5 := On(tObj{}).Required().Range(13, 17)
-	assert.Equal("cannot be applied on this object", v5.Error().Error())
+	assert.Equal("cannot be applied on this object",
+		v5.Error().Error())
 
+	taf := time.Date(2011, time.November, 10, 23, 0, 0, 0, time.UTC)
+	tbef := time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC)
+	v6 := On(taf).IsTimeBefore(tbef)
+	assert.Equal("time should be before 2010-11-10 23:00:00 +0000 UTC",
+		v6.Error().Error())
+
+	v7 := On(tbef).IsTimeAfter(taf)
+	assert.Equal("time should be after 2011-11-10 23:00:00 +0000 UTC",
+		v7.Error().Error())
 }
