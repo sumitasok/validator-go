@@ -76,14 +76,8 @@ func (v *Validator) Max(maxI interface{}) *Validator {
 			}
 		}
 	case reflect.Struct:
-		if dTime, ok := v.Object.(time.Time); ok {
-			if t, ok := maxI.(time.Time); ok {
-				if dTime.After(t) {
-					v.Add("time should be before " + t.String())
-				}
-			} else {
-				v.Add("cannot be applied on this object")
-			}
+		if t, ok := maxI.(time.Time); ok {
+			v.IsTimeBefore(t)
 		} else {
 			v.Add("cannot be applied on this object")
 		}
@@ -127,14 +121,8 @@ func (v *Validator) Min(minI interface{}) *Validator {
 			}
 		}
 	case reflect.Struct:
-		if dTime, ok := v.Object.(time.Time); ok {
-			if t, ok := minI.(time.Time); ok {
-				if dTime.Before(t) {
-					v.Add("time should be after " + t.String())
-				}
-			} else {
-				v.Add("cannot be applied on this object")
-			}
+		if t, ok := minI.(time.Time); ok {
+			v.IsTimeAfter(t)
 		} else {
 			v.Add("cannot be applied on this object")
 		}
