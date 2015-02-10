@@ -3,45 +3,42 @@ package validator
 import (
 	// "fmt"
 	"errors"
-	"reflect"
+	// "reflect"
 )
 
-type Typer interface {
-	Required() bool
-}
-
 type Validator struct {
-	Object Typer
-	Error  error
+	Object interface{}
+	Errors []error
 }
 
 func (v *Validator) Required() *Validator {
-	if v.Object.Required() == false {
-		v.Error = errors.New("required field")
+	if v.Object == nil {
+		v.Add("required")
 	}
+	// obj := dereference(objPtr)
+	// if timeVal, ok := obj.(time.Time); ok {
+	// 	return !timeVal.IsZero()
+	// }
+
+	// val := reflect.ValueOf(obj)
+	// return !IsZero(val)
+
 	return v
 }
 
-func (v *Validator) On(obj interface{}) *Validator {
-
-	objType := reflect.TypeOf(obj).String()
-	switch objType {
-	case "string":
-		if str, ok := obj.(string); ok {
-			v.Object = VString{Data: str}
-		}
+func On(obj interface{}) *Validator {
+	return &Validator{
+		Object: obj,
 	}
-	return v
 }
 
-type VString struct {
-	Data string
+func (v Validator) Error() error {
+	if len(v.Errors) == 0 {
+		return nil
+	}
+	return v.Errors[0]
 }
 
-func (v VString) Required() bool {
-	if v.Data == "" {
-		return false
-	} else {
-		return true
-	}
+func (v *Validator) Add(msg string) {
+	v.Errors = append(v.Errors, errors.New(msg))
 }

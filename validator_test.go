@@ -9,20 +9,9 @@ import (
 func TestValidator(t *testing.T) {
 	assert := assert.New(t)
 
-	v := Validator{}
-	obj := v.On("Sumit")
+	v := On("Sumit").Required()
+	assert.NoError(v.Error())
 
-	assert.IsType(VString{}, v.Object)
+	assert.True(true)
 
-	obj.Required()
-
-	assert.NoError(obj.Error)
-
-	obj = v.On("")
-
-	assert.IsType(VString{}, v.Object)
-
-	obj.Required()
-
-	assert.Error(obj.Error)
 }
