@@ -49,7 +49,7 @@ func (v *Validator) Match(pattern string, msg ...string) *Validator {
 		matched, err := regexp.MatchString(pattern, str)
 		if err != nil || matched == false {
 			if len(msg) == 0 {
-				v.Add("pattern missmatch")
+				v.Add("pattern mismatch")
 			} else {
 				v.Add(msg[0])
 			}
