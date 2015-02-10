@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-type TestStruct struct {
+type tObj struct {
 	Name string
 }
 
@@ -16,7 +16,7 @@ func TestValidator(t *testing.T) {
 	v := On("Sumit").Required()
 	assert.NoError(v.Error())
 
-	ts := TestStruct{}
+	ts := tObj{}
 	v1 := On(ts.Name).Required()
 	assert.Error(v1.Error())
 
@@ -31,5 +31,8 @@ func TestValidator(t *testing.T) {
 	assert.Equal("maximum 7 characters allowed", v4max.Error().Error())
 	v4min := On("classified").Required().Range(13, 17)
 	assert.Equal("minimum 13 characters required", v4min.Error().Error())
+
+	v5 := On(tObj{}).Required().Range(13, 17)
+	assert.Equal("cannot be applied on this object", v5.Error().Error())
 
 }

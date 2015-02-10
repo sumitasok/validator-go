@@ -40,6 +40,8 @@ func (v *Validator) Max(max int) *Validator {
 		if reflect.ValueOf(v.Object).Len() > max {
 			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
 		}
+	default:
+		v.Add("cannot be applied on this object")
 	}
 
 	return v
@@ -67,6 +69,8 @@ func (v *Validator) Min(min int) *Validator {
 		if reflect.ValueOf(v.Object).Len() < min {
 			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
 		}
+	default:
+		v.Add("cannot be applied on this object")
 	}
 
 	return v
@@ -103,6 +107,8 @@ func (v *Validator) Required() *Validator {
 		if reflect.ValueOf(v.Object).IsNil() {
 			v.Add("required")
 		}
+	default:
+		v.Add("cannot be applied on this object")
 	}
 	return v
 }
