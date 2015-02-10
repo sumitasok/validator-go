@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+const (
+	EMAIL_PATTERN = "([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+"
+)
+
 type Validator struct {
 	Object interface{}
 	Errors []error
@@ -63,7 +67,7 @@ func (v *Validator) Match(pattern string, msg ...string) *Validator {
 }
 
 func (v *Validator) Email(msg ...string) *Validator {
-	pattern := "([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+"
+	pattern := EMAIL_PATTERN
 	if len(msg) == 0 {
 		msg = []string{"not a valid email"}
 	}
