@@ -62,9 +62,12 @@ func (v *Validator) Match(pattern string, msg ...string) *Validator {
 	return v
 }
 
-func (v *Validator) Email() *Validator {
+func (v *Validator) Email(msg ...string) *Validator {
 	pattern := "([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+"
-	return v.Match(pattern, "not a valid email")
+	if len(msg) == 0 {
+		msg = []string{"not a valid email"}
+	}
+	return v.Match(pattern, msg...)
 }
 
 func (v *Validator) Max(maxI interface{}) *Validator {
