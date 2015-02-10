@@ -35,9 +35,17 @@ func TestMax(t *testing.T) {
 
 	// replicate errors for more types
 
+	v3int := On(123).Required().Max(7)
+	assert.Equal("maximum 7 is allowed",
+		v3int.Error().Error())
+
 	v3 := On("classified").Required().Max(7)
 	assert.Equal("maximum 7 characters allowed",
 		v3.Error().Error())
+}
+
+func TestRange(t *testing.T) {
+	assert := assert.New(t)
 
 	v4max := On("classified").Required().Range(3, 7)
 	assert.Equal("maximum 7 characters allowed",
@@ -48,10 +56,6 @@ func TestMax(t *testing.T) {
 	v4maxInt := On(123).Required().Range(3, 7)
 	assert.Equal("maximum 7 is allowed",
 		v4maxInt.Error().Error())
-}
-
-func TestRange(t *testing.T) {
-	assert := assert.New(t)
 
 	v5 := On(tObj{}).Required().Range(13, 17)
 	assert.Equal("cannot be applied on this object",
@@ -87,6 +91,11 @@ func TestMaxTime(t *testing.T) {
 	assert.Equal("time should be before 2010-11-10 23:00:00 +0000 UTC",
 		v6.Error().Error())
 }
+
+// tbef := time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC)
+
+// v2tint := On(123).Max(tbef)
+// assert.Equal("non-evaluable comparators provided", v2tint.Error().Error())
 
 func TestMatch(t *testing.T) {
 	assert := assert.New(t)

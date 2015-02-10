@@ -222,3 +222,12 @@ func (v Validator) Error() error {
 func (v *Validator) Add(msg string) {
 	v.Errors = append(v.Errors, errors.New(msg))
 }
+
+func (v *Validator) CheckCompatibility(obj interface{}) bool {
+	if reflect.ValueOf(v.Object).Kind() != reflect.ValueOf(obj).Kind() {
+		v.Add("non-evaluable comparators provided")
+		return false
+	} else {
+		return true
+	}
+}
