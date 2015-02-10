@@ -51,15 +51,15 @@ func (v *Validator) Max(max int) *Validator {
 		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		if reflect.ValueOf(v.Object).Int() > int64(max) {
-			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+			v.Add("maximum " + strconv.Itoa(max) + " is allowed")
 		}
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
 		if reflect.ValueOf(v.Object).Uint() > uint64(max) {
-			v.Add("maximum" + strconv.Itoa(max) + "numbers allowed")
+			v.Add("maximum" + strconv.Itoa(max) + "is allowed")
 		}
 	case reflect.Float32, reflect.Float64:
 		if reflect.ValueOf(v.Object).Float() > float64(max) {
-			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+			v.Add("maximum " + strconv.Itoa(max) + " is allowed")
 		}
 	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
 		if reflect.ValueOf(v.Object).Len() > max {
@@ -80,15 +80,15 @@ func (v *Validator) Min(min int) *Validator {
 		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		if reflect.ValueOf(v.Object).Int() < int64(min) {
-			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+			v.Add("minimum " + strconv.Itoa(min) + " is required")
 		}
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
 		if reflect.ValueOf(v.Object).Uint() < uint64(min) {
-			v.Add("minimum" + strconv.Itoa(min) + "numbers required")
+			v.Add("minimum" + strconv.Itoa(min) + "is required")
 		}
 	case reflect.Float32, reflect.Float64:
 		if reflect.ValueOf(v.Object).Float() < float64(min) {
-			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+			v.Add("minimum " + strconv.Itoa(min) + " is required")
 		}
 	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
 		if reflect.ValueOf(v.Object).Len() < min {

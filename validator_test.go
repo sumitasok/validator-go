@@ -36,6 +36,9 @@ func TestValidator(t *testing.T) {
 	v4min := On("classified").Required().Range(13, 17)
 	assert.Equal("minimum 13 characters required",
 		v4min.Error().Error())
+	v4maxInt := On(123).Required().Range(3, 7)
+	assert.Equal("maximum 7 is allowed",
+		v4maxInt.Error().Error())
 
 	v5 := On(tObj{}).Required().Range(13, 17)
 	assert.Equal("cannot be applied on this object",
