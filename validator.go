@@ -72,27 +72,49 @@ func (v *Validator) Max(max int) *Validator {
 	return v
 }
 
-func (v *Validator) Min(min int) *Validator {
+func (v *Validator) Min(minI interface{}) *Validator {
 	switch reflect.ValueOf(v.Object).Kind() {
 	case reflect.Array, reflect.String:
-		if reflect.ValueOf(v.Object).Len() < min {
-			v.Add("minimum " + strconv.Itoa(min) + " characters " + "required")
+		if min, ok := minI.(int); ok {
+			if reflect.ValueOf(v.Object).Len() < min {
+				v.Add("minimum " + strconv.Itoa(min) + " characters " + "required")
+			}
 		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		if reflect.ValueOf(v.Object).Int() < int64(min) {
-			v.Add("minimum " + strconv.Itoa(min) + " is required")
+		if min, ok := minI.(int64); ok {
+			if reflect.ValueOf(v.Object).Int() < min {
+				v.Add("minimum " + strconv.Itoa(int(min)) + " is required")
+			}
 		}
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		if reflect.ValueOf(v.Object).Uint() < uint64(min) {
-			v.Add("minimum" + strconv.Itoa(min) + "is required")
+		if min, ok := minI.(uint64); ok {
+			if reflect.ValueOf(v.Object).Uint() < min {
+				v.Add("minimum" + strconv.Itoa(int(min)) + "is required")
+			}
 		}
 	case reflect.Float32, reflect.Float64:
-		if reflect.ValueOf(v.Object).Float() < float64(min) {
-			v.Add("minimum " + strconv.Itoa(min) + " is required")
+		if min, ok := minI.(float64); ok {
+			if reflect.ValueOf(v.Object).Float() < min {
+				v.Add("minimum " + strconv.Itoa(int(min)) + " is required")
+			}
 		}
 	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
-		if reflect.ValueOf(v.Object).Len() < min {
-			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+		if min, ok := minI.(int); ok {
+			if reflect.ValueOf(v.Object).Len() < min {
+				v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+			}
+		}
+	case reflect.Struct:
+		if dTime, ok := v.Object.(time.Time); ok {
+			if t, ok := minI.(time.Time); ok {
+				if dTime.Before(t) {
+					v.Add("time should be after " + t.String())
+				}
+			} else {
+				v.Add("cannot be applied on this object")
+			}
+		} else {
+			v.Add("cannot be applied on this object")
 		}
 	default:
 		v.Add("cannot be applied on this object")
@@ -131,6 +153,11 @@ func (v *Validator) Required() *Validator {
 	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
 		if reflect.ValueOf(v.Object).IsNil() {
 			v.Add("required")
+		}
+	case reflect.Struct:
+		if _, ok := v.Object.(time.Time); ok {
+		} else {
+			v.Add("cannot be applied on this object")
 		}
 	default:
 		v.Add("cannot be applied on this object")

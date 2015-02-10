@@ -14,6 +14,9 @@ type tObj struct {
 func TestValidator(t *testing.T) {
 	assert := assert.New(t)
 
+	taf := time.Date(2011, time.November, 10, 23, 0, 0, 0, time.UTC)
+	tbef := time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC)
+
 	v := On("Sumit").Required()
 	assert.NoError(v.Error())
 
@@ -24,6 +27,10 @@ func TestValidator(t *testing.T) {
 	v2 := On("Sumit").Required().Min(7)
 	assert.Equal("minimum 7 characters required",
 		v2.Error().Error())
+	v2tbef := On(tbef).Required().Min(taf)
+	assert.Equal("time should be after 2011-11-10 23:00:00 +0000 UTC",
+		v2tbef.Error().Error())
+
 	// replicate errors for more types
 
 	v3 := On("classified").Required().Max(7)
@@ -44,8 +51,6 @@ func TestValidator(t *testing.T) {
 	assert.Equal("cannot be applied on this object",
 		v5.Error().Error())
 
-	taf := time.Date(2011, time.November, 10, 23, 0, 0, 0, time.UTC)
-	tbef := time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC)
 	v6 := On(taf).IsTimeBefore(tbef)
 	assert.Equal("time should be before 2010-11-10 23:00:00 +0000 UTC",
 		v6.Error().Error())
