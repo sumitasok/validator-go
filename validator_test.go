@@ -11,7 +11,7 @@ type tObj struct {
 	Name string
 }
 
-func TestValidator(t *testing.T) {
+func TestRequired(t *testing.T) {
 	assert := assert.New(t)
 
 	v := On("Sumit").Required()
@@ -20,10 +20,18 @@ func TestValidator(t *testing.T) {
 	ts := tObj{}
 	v1 := On(ts.Name).Required()
 	assert.Error(v1.Error())
+}
+
+func TestMin(t *testing.T) {
+	assert := assert.New(t)
 
 	v2 := On("Sumit").Required().Min(7)
 	assert.Equal("minimum 7 characters required",
 		v2.Error().Error())
+}
+
+func TestMax(t *testing.T) {
+	assert := assert.New(t)
 
 	// replicate errors for more types
 
@@ -40,6 +48,10 @@ func TestValidator(t *testing.T) {
 	v4maxInt := On(123).Required().Range(3, 7)
 	assert.Equal("maximum 7 is allowed",
 		v4maxInt.Error().Error())
+}
+
+func TestRange(t *testing.T) {
+	assert := assert.New(t)
 
 	v5 := On(tObj{}).Required().Range(13, 17)
 	assert.Equal("cannot be applied on this object",
