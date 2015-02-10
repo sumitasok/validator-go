@@ -4,6 +4,7 @@ import (
 	"errors"
 	// "fmt"
 	"reflect"
+	"strconv"
 )
 
 type Validator struct {
@@ -11,11 +12,66 @@ type Validator struct {
 	Errors []error
 }
 
+func (v *Validator) Max(max int) *Validator {
+	switch reflect.ValueOf(v.Object).Kind() {
+	case reflect.Array, reflect.String:
+		if reflect.ValueOf(v.Object).Len() > max {
+			v.Add("maximum " + strconv.Itoa(max) + " characters " + "allowed")
+		}
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		if reflect.ValueOf(v.Object).Int() > int64(max) {
+			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+		}
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		if reflect.ValueOf(v.Object).Uint() > uint64(max) {
+			v.Add("maximum" + strconv.Itoa(max) + "numbers allowed")
+		}
+	case reflect.Float32, reflect.Float64:
+		if reflect.ValueOf(v.Object).Float() > float64(max) {
+			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+		}
+	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+		if reflect.ValueOf(v.Object).Len() > max {
+			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+		}
+	}
+
+	return v
+}
+
+func (v *Validator) Min(min int) *Validator {
+	switch reflect.ValueOf(v.Object).Kind() {
+	case reflect.Array, reflect.String:
+		if reflect.ValueOf(v.Object).Len() < min {
+			v.Add("minimum " + strconv.Itoa(min) + " characters " + "required")
+		}
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+		if reflect.ValueOf(v.Object).Int() < int64(min) {
+			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+		}
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
+		if reflect.ValueOf(v.Object).Uint() < uint64(min) {
+			v.Add("minimum" + strconv.Itoa(min) + "numbers required")
+		}
+	case reflect.Float32, reflect.Float64:
+		if reflect.ValueOf(v.Object).Float() < float64(min) {
+			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+		}
+	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+		if reflect.ValueOf(v.Object).Len() < min {
+			v.Add("minimum " + strconv.Itoa(min) + " numbers required")
+		}
+	}
+
+	return v
+}
+
 func (v *Validator) Required() *Validator {
 	if v.Object == nil {
 		v.Add("required")
 	}
 
+	// inspired by https://github.com/jamieomatthews/validation
 	switch reflect.ValueOf(v.Object).Kind() {
 	case reflect.Array, reflect.String:
 		if reflect.ValueOf(v.Object).Len() == 0 {
@@ -42,15 +98,6 @@ func (v *Validator) Required() *Validator {
 			v.Add("required")
 		}
 	}
-
-	// obj := dereference(objPtr)
-	// if timeVal, ok := obj.(time.Time); ok {
-	// 	return !timeVal.IsZero()
-	// }
-
-	// val := reflect.ValueOf(obj)
-	// return !IsZero(val)
-
 	return v
 }
 
