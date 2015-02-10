@@ -76,4 +76,7 @@ func TestMatch(t *testing.T) {
 
 	vMatch := On("obj").Required().Match("([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+")
 	assert.Equal("pattern missmatch", vMatch.Error().Error())
+
+	vEmail := On("obj").Required().Email()
+	assert.Equal("not a valid email", vEmail.Error().Error())
 }

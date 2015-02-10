@@ -44,11 +44,15 @@ func (v *Validator) IsTimeAfter(t time.Time) *Validator {
 	return v
 }
 
-func (v *Validator) Match(pattern string) *Validator {
+func (v *Validator) Match(pattern string, msg ...string) *Validator {
 	if str, ok := v.Object.(string); ok {
 		matched, err := regexp.MatchString(pattern, str)
 		if err != nil || matched == false {
-			v.Add("pattern missmatch")
+			if len(msg) == 0 {
+				v.Add("pattern missmatch")
+			} else {
+				v.Add(msg[0])
+			}
 		} else {
 			v.Add("matching cannot be applied on this object")
 		}
@@ -56,6 +60,11 @@ func (v *Validator) Match(pattern string) *Validator {
 		v.Add("cannot be applied on this object")
 	}
 	return v
+}
+
+func (v *Validator) Email() *Validator {
+	pattern := "([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+"
+	return v.Match(pattern, "not a valid email")
 }
 
 func (v *Validator) Max(maxI interface{}) *Validator {
