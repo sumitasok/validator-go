@@ -59,3 +59,15 @@ func TestValidator(t *testing.T) {
 	assert.Equal("time should be after 2011-11-10 23:00:00 +0000 UTC",
 		v7.Error().Error())
 }
+
+func TestMaxTime(t *testing.T) {
+	assert := assert.New(t)
+
+	taf := time.Date(2011, time.November, 10, 23, 0, 0, 0, time.UTC)
+	tbef := time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC)
+
+	v2tbef := On(taf).Required().Max(tbef)
+	assert.Equal("time should be before 2010-11-10 23:00:00 +0000 UTC",
+		v2tbef.Error().Error())
+
+}

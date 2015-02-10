@@ -43,27 +43,49 @@ func (v *Validator) IsTimeAfter(t time.Time) *Validator {
 	return v
 }
 
-func (v *Validator) Max(max int) *Validator {
+func (v *Validator) Max(maxI interface{}) *Validator {
 	switch reflect.ValueOf(v.Object).Kind() {
 	case reflect.Array, reflect.String:
-		if reflect.ValueOf(v.Object).Len() > max {
-			v.Add("maximum " + strconv.Itoa(max) + " characters " + "allowed")
+		if max, ok := maxI.(int); ok {
+			if reflect.ValueOf(v.Object).Len() > max {
+				v.Add("maximum " + strconv.Itoa(max) + " characters " + "allowed")
+			}
 		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
-		if reflect.ValueOf(v.Object).Int() > int64(max) {
-			v.Add("maximum " + strconv.Itoa(max) + " is allowed")
+		if max, ok := maxI.(int); ok {
+			if reflect.ValueOf(v.Object).Int() > int64(max) {
+				v.Add("maximum " + strconv.Itoa(max) + " is allowed")
+			}
 		}
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64, reflect.Uintptr:
-		if reflect.ValueOf(v.Object).Uint() > uint64(max) {
-			v.Add("maximum" + strconv.Itoa(max) + "is allowed")
+		if max, ok := maxI.(int); ok {
+			if reflect.ValueOf(v.Object).Uint() > uint64(max) {
+				v.Add("maximum" + strconv.Itoa(max) + "is allowed")
+			}
 		}
 	case reflect.Float32, reflect.Float64:
-		if reflect.ValueOf(v.Object).Float() > float64(max) {
-			v.Add("maximum " + strconv.Itoa(max) + " is allowed")
+		if max, ok := maxI.(int); ok {
+			if reflect.ValueOf(v.Object).Float() > float64(max) {
+				v.Add("maximum " + strconv.Itoa(max) + " is allowed")
+			}
 		}
 	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
-		if reflect.ValueOf(v.Object).Len() > max {
-			v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+		if max, ok := maxI.(int); ok {
+			if reflect.ValueOf(v.Object).Len() > max {
+				v.Add("maximum " + strconv.Itoa(max) + " numbers allowed")
+			}
+		}
+	case reflect.Struct:
+		if dTime, ok := v.Object.(time.Time); ok {
+			if t, ok := maxI.(time.Time); ok {
+				if dTime.After(t) {
+					v.Add("time should be before " + t.String())
+				}
+			} else {
+				v.Add("cannot be applied on this object")
+			}
+		} else {
+			v.Add("cannot be applied on this object")
 		}
 	default:
 		v.Add("cannot be applied on this object")
