@@ -69,5 +69,11 @@ func TestMaxTime(t *testing.T) {
 	v2tbef := On(taf).Required().Max(tbef)
 	assert.Equal("time should be before 2010-11-10 23:00:00 +0000 UTC",
 		v2tbef.Error().Error())
+}
 
+func TestMatch(t *testing.T) {
+	assert := assert.New(t)
+
+	vMatch := On("obj").Required().Match("([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+")
+	assert.Equal("pattern missmatch", vMatch.Error().Error())
 }

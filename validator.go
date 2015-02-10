@@ -4,6 +4,7 @@ import (
 	"errors"
 	// "fmt"
 	"reflect"
+	"regexp"
 	"strconv"
 	"time"
 )
@@ -40,6 +41,20 @@ func (v *Validator) IsTimeAfter(t time.Time) *Validator {
 		v.Add("cannot be applied on this object")
 	}
 
+	return v
+}
+
+func (v *Validator) Match(pattern string) *Validator {
+	if str, ok := v.Object.(string); ok {
+		matched, err := regexp.MatchString(pattern, str)
+		if err != nil || matched == false {
+			v.Add("pattern missmatch")
+		} else {
+			v.Add("matching cannot be applied on this object")
+		}
+	} else {
+		v.Add("cannot be applied on this object")
+	}
 	return v
 }
 
