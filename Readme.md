@@ -43,5 +43,4 @@ vMatch := On("email@exmple.com").Required().Match(validator.EMAIL_PATTERN)
 
 TO-DO:
 
-- move validation code into methods
-- move validation code into struct and add check compatibility
+- add check compatibility
