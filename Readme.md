@@ -20,3 +20,22 @@ returns
 	errors.New("name: min custom message")
 }
 ```
+
+#### Match
+
+```
+vMatch := On("email@exmple.com").Required().Match("([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+")
+```
+
+Or
+
+```
+vEmail := On("email@example.com").Required().Email()
+```
+
+Or
+
+```
+vMatch := On("email@exmple.com").Required().Match(validator.EMAIL_PATTERN)
+```
+```
