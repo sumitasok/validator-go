@@ -106,3 +106,22 @@ func TestMatch(t *testing.T) {
 	vEmail := On("obj").Required().Email()
 	assert.Equal("not a valid email", vEmail.Error().Error())
 }
+
+func TestAdd(t *testing.T) {
+	assert := assert.New(t)
+
+	tO := tObj{}
+
+	v := On(tO.Name).Key("name")
+	v.Add("required field")
+	assert.Equal("name: required field", v.Error().Error())
+}
+
+func TestKey(t *testing.T) {
+	assert := assert.New(t)
+
+	tO := tObj{}
+
+	v := On(tO.Name).Key("name")
+	assert.Equal("name", v.KeyName)
+}

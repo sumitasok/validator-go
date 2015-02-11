@@ -14,8 +14,9 @@ const (
 )
 
 type Validator struct {
-	Object interface{}
-	Errors []error
+	Object  interface{}
+	KeyName string
+	Errors  []error
 }
 
 func (v *Validator) Range(min int, max int) *Validator {
@@ -220,7 +221,16 @@ func (v Validator) Error() error {
 }
 
 func (v *Validator) Add(msg string) {
-	v.Errors = append(v.Errors, errors.New(msg))
+	if v.KeyName == "" {
+		v.Errors = append(v.Errors, errors.New(msg))
+	} else {
+		v.Errors = append(v.Errors, errors.New(v.KeyName+": "+msg))
+	}
+}
+
+func (v *Validator) Key(name string) *Validator {
+	v.KeyName = name
+	return v
 }
 
 func (v *Validator) CheckCompatibility(obj interface{}) bool {
