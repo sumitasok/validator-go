@@ -4,12 +4,7 @@ import (
 	"errors"
 	// "fmt"
 	"reflect"
-	"regexp"
 	"time"
-)
-
-const (
-	EMAIL_PATTERN = "([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+"
 )
 
 type Validator struct {
@@ -49,16 +44,9 @@ func (v *Validator) IsTimeAfter(t time.Time, msg ...string) *Validator {
 }
 
 func (v *Validator) Match(pattern string, msg ...string) *Validator {
-	if str, ok := v.Object.(string); ok {
-		matched, err := regexp.MatchString(pattern, str)
-		if err != nil || matched == false {
-			v.Add("pattern mismatch", msg...)
-		} else {
-			v.Add("matching cannot be applied on this object")
-		}
-	} else {
-		v.Add("cannot be applied on this object")
-	}
+	match := Match{}
+	match.validate(v, pattern, msg...)
+
 	return v
 }
 
