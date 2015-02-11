@@ -26,7 +26,7 @@ returns
 #### Match
 
 ```
-vMatch := On("email@exmple.com").Required().Match("([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+")
+vMatch := On("email@example.com").Required().Match("([a-zA-Z0-9])+(@)([a-zA-Z0-9])+((.)[a-zA-Z0-9])+")
 ```
 
 Or
@@ -40,6 +40,39 @@ Or
 ```
 vMatch := On("email@exmple.com").Required().Match(validator.EMAIL_PATTERN)
 ```
+
+#### Time
+
+time/thresholdTime is an object of `time.time`
+
+```
+time.Date(2011, time.November, 10, 23, 0, 0, 0, time.UTC)
+```
+
+In order to validate if the time provided is after a particular period
+
+```
+On(time).Min(thresholdTime)
+```
+
+Or
+
+```
+On(time).IsTimeAfter(thresholdTime)
+```
+
+In order to validate if the time provided is before a particular period
+
+```
+On(time).Max(thresholdTime)
+```
+
+Or
+
+```
+On(time).IsTimeBefore(thresholdTime)
+```
+
 
 TO-DO:
 
