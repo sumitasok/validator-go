@@ -10,7 +10,9 @@ alt:
 v := On("string").Key("name").Required("custom message required").Min(7, "min custom message").Max(10, "max custom message")
 ```
 
-```v.Errors()```
+```
+v.Errors()
+```
 
 returns
 
