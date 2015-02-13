@@ -125,3 +125,9 @@ func TestKey(t *testing.T) {
 	v := On(tO.Name).Key("name")
 	assert.Equal("name", v.KeyName)
 }
+
+func TestError(t *testing.T) {
+	assert := assert.New(t)
+	v := Validator{}
+	assert.Equal(nil, v.Error())
+}

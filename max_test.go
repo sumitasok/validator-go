@@ -77,8 +77,8 @@ func TestErrorMessages(t *testing.T) {
 	m := Max{}
 
 	for i, cond := range tprobabs {
-		v := On(cond.Obj)
 		for j, s := range cond.Ops[op] {
+			v := On(cond.Obj)
 			m.validate(v, s.V)
 			assert.Equal(s.E, v.Error().Error(), fmt.Sprintf("%d %s %d", i, op, j))
 		}
