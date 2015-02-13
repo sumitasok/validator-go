@@ -8,6 +8,10 @@ import (
 	"time"
 )
 
+var (
+	tArray = []string{"Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing"}
+)
+
 // func TestMaxMixAndMatch(t *testing.T) {
 // 	assert := assert.New(t)
 
@@ -78,4 +82,15 @@ func TestTypeAllow(t *testing.T) {
 	e := testStr{}
 
 	assert.False(typeAllow(e, b))
+}
+
+func TestErrorMessages(t *testing.T) {
+	assert := assert.New(t)
+
+	v := On(tArray)
+
+	m := Max{}
+	m.validate(v, 4)
+
+	assert.Equal("maximum 4 numbers allowed", v.Error().Error())
 }
