@@ -2,6 +2,7 @@ package validator
 
 import (
 	// "fmt"
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -58,6 +59,14 @@ func TestTypeAllow(t *testing.T) {
 	e := testStr{}
 
 	assert.False(typeAllow(e, b))
+
+	op := "allowSuccess"
+
+	for i, c := range tprobabs {
+		for j, k := range c.Ops["allowSuccess"] {
+			assert.True(typeAllow(c.Obj, k.V), fmt.Sprintf("%d %s %d", i, op, j))
+		}
+	}
 }
 
 func TestErrorMessages(t *testing.T) {
@@ -69,7 +78,9 @@ func TestErrorMessages(t *testing.T) {
 
 	for i, cond := range tprobabs {
 		v := On(cond.Obj)
-		m.validate(v, cond.Ops[op].V)
-		assert.Equal(cond.Ops[op].E, v.Error().Error(), cond.String(i, op, cond.Ops[op].V))
+		for j, s := range cond.Ops[op] {
+			m.validate(v, s.V)
+			assert.Equal(s.E, v.Error().Error(), fmt.Sprintf("%d %s %d", i, op, j))
+		}
 	}
 }
