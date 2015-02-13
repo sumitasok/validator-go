@@ -3,23 +3,10 @@ package validator
 import (
 	// "fmt"
 	"github.com/stretchr/testify/assert"
-	// "reflect"
 	"testing"
 	"time"
 )
 
-var (
-	tArray = []string{"Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing"}
-)
-
-// func TestMaxMixAndMatch(t *testing.T) {
-// 	assert := assert.New(t)
-
-// 	// m := Max{}
-
-// 	// ArrayValue := []string{"7"}
-// 	// StringValue := "7"
-// 	IntValue := int(7)
 // 	Int8Value := int8(17) // -128 to 127, Signed 8-bit integer, bytes per element 1
 // 	// Int16Value := int16(7) -32,768 to 32,767, Signed 16-bit integer, bytes per element 2
 // 	// Int32Value := int32(7) -2,147,483,648 to 2,147,483,647, Signed 32-bit integer, bytes per element 4
@@ -36,29 +23,18 @@ var (
 // 	// MapValue := map[int]string{7}
 // 	// PtrValue := 7
 // 	// SliceValue := 7
-
-// 	// m.validate(v, maxI, ...)
-
 // 	v := false
-
 // 	k1, ok1 := makeInterface(IntValue).(int)
 // 	k1tc := int64(IntValue)
 // 	fmt.Println("k1", k1, "ok1", ok1, "k1tc", k1tc)
-
 // 	k2, ok2 := makeInterface(Int8Value).(int8)
 // 	k2tc := float64(Int8Value)
 // 	// k264, ok2 := makeInterface(k2tc).(float64)
 // 	fmt.Println("k2", k2, "ok2", ok2, "k2tc", k2tc, float64(1.1))
-
 // 	if k2tc > float64(makeInterface(Int8Value)) {
 // 		v = true
 // 	}
-
 // 	assert.True(v)
-// }
-
-// func makeInterface(i interface{}) interface{} {
-// 	return i
 // }
 
 type testStr struct{}
@@ -87,27 +63,13 @@ func TestTypeAllow(t *testing.T) {
 func TestErrorMessages(t *testing.T) {
 	assert := assert.New(t)
 
+	op := "maxFail"
+
 	m := Max{}
 
-	// reflect.Slice
-	v := On(tArray)
-
-	m.validate(v, 4)
-
-	assert.Equal("maximum 4 numbers allowed", v.Error().Error())
-
-	// reflect.String
-	v = On("Lorem ipsum dolor sit amet, consectetur adipiscing")
-
-	m.validate(v, 7)
-
-	assert.Equal("maximum 7 characters allowed", v.Error().Error())
-
-	// reflect.Int
-	v = On(int(127))
-
-	m.validate(v, 7)
-
-	assert.Equal("maximum 7 is allowed", v.Error().Error())
-
+	for i, cond := range tprobabs {
+		v := On(cond.Obj)
+		m.validate(v, cond.Ops[op].V)
+		assert.Equal(cond.Ops[op].E, v.Error().Error(), cond.String(i, op, cond.Ops[op].V))
+	}
 }
