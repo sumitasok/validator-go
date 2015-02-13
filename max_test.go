@@ -87,10 +87,27 @@ func TestTypeAllow(t *testing.T) {
 func TestErrorMessages(t *testing.T) {
 	assert := assert.New(t)
 
+	m := Max{}
+
+	// reflect.Slice
 	v := On(tArray)
 
-	m := Max{}
 	m.validate(v, 4)
 
 	assert.Equal("maximum 4 numbers allowed", v.Error().Error())
+
+	// reflect.String
+	v = On("Lorem ipsum dolor sit amet, consectetur adipiscing")
+
+	m.validate(v, 7)
+
+	assert.Equal("maximum 7 characters allowed", v.Error().Error())
+
+	// reflect.Int
+	v = On(int(127))
+
+	m.validate(v, 7)
+
+	assert.Equal("maximum 7 is allowed", v.Error().Error())
+
 }
