@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"time"
+	"strconv"
 )
 
 type Max struct {
@@ -46,7 +47,7 @@ func (m *Max) validate(v *Validator, maxI interface{}, msg ...string) {
 	case reflect.Array, reflect.String:
 		max := reflect.ValueOf(maxI).Int()
 		if int64(reflect.ValueOf(v.Object).Len()) > max {
-			defaultMsg := fmt.Sprintf("maximum %x characters allowed", max)
+			defaultMsg := fmt.Sprintf("maximum %s characters allowed", strconv.Itoa(int(max)))
 			v.Add(defaultMsg, msg...)
 		}
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
