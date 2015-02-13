@@ -12,18 +12,22 @@ type Max struct {
 }
 
 func typeAllow(a interface{}, b interface{}) bool {
-	if reflect.ValueOf(a).Kind() == reflect.Struct && reflect.ValueOf(b).Kind() != reflect.Struct {
+	aKind := reflect.ValueOf(a).Kind()
+	bKind := reflect.ValueOf(b).Kind()
+	aType := reflect.ValueOf(a).Type()
+	bType := reflect.ValueOf(b).Type()
+	if aKind == reflect.Struct && bKind != reflect.Struct {
 		return false
 	}
 
-	if reflect.ValueOf(a).Kind() != reflect.Struct && reflect.ValueOf(b).Kind() == reflect.Struct {
+	if aKind != reflect.Struct && bKind == reflect.Struct {
 		return false
 	}
 
 	//	If both are struct
-	if reflect.ValueOf(a).Kind() == reflect.Struct && reflect.ValueOf(b).Kind() == reflect.Struct {
-		if reflect.ValueOf(a).Type() == reflect.ValueOf(b).Type() {
-			if reflect.ValueOf(a).Type() == reflect.ValueOf(time.Time{}).Type() {
+	if aKind == reflect.Struct && bKind == reflect.Struct {
+		if aType == bType {
+			if aType == reflect.ValueOf(time.Time{}).Type() {
 				// only time is implemented yet
 				return true
 			}
@@ -32,11 +36,17 @@ func typeAllow(a interface{}, b interface{}) bool {
 		return false
 	}
 
+	if aKind == reflect.String {
+		if bKind == reflect.Float64 {
+			return false
+		}
+	}
+
 	return true
 }
 
 func (m *Max) validate(v *Validator, maxI interface{}, msg ...string) {
-	if !typeAllow(maxI, v.Object) {
+	if !typeAllow(v.Object, maxI) {
 		v.Add("cannot be applied on this object")
 		return
 	}
