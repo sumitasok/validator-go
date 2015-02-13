@@ -37,7 +37,7 @@ func typeAllow(a interface{}, b interface{}) bool {
 	}
 
 	if aKind == reflect.String {
-		if bKind == reflect.Float64 {
+		if bKind == reflect.Float64 || bKind == reflect.Float32 {
 			return false
 		}
 	}
