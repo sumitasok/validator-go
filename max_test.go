@@ -1,11 +1,9 @@
 package validator
 
 import (
-	// "fmt"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
 
 // 	Int8Value := int8(17) // -128 to 127, Signed 8-bit integer, bytes per element 1
@@ -43,27 +41,10 @@ type testStr struct{}
 func TestTypeAllow(t *testing.T) {
 	assert := assert.New(t)
 
-	a := time.Now()
-	b := time.Now()
-
-	assert.True(typeAllow(a, b))
-
-	c := int(7)
-
-	assert.False(typeAllow(a, c))
-
-	d := int64(7)
-
-	assert.True(typeAllow(c, d))
-
-	e := testStr{}
-
-	assert.False(typeAllow(e, b))
-
-	op := "allowSuccess"
+	op := "allow"
 
 	for i, c := range tprobabs {
-		for j, k := range c.Ops["allow"] {
+		for j, k := range c.Ops[op] {
 			assert.Equal(k.A, typeAllow(c.Obj, k.V), fmt.Sprintf("%d %s %d", i, op, j))
 		}
 	}
