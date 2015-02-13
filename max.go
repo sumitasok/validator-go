@@ -3,8 +3,8 @@ package validator
 import (
 	"fmt"
 	"reflect"
-	"time"
 	"strconv"
+	"time"
 )
 
 type Max struct {
@@ -31,6 +31,17 @@ func typeAllow(a interface{}, b interface{}) bool {
 	}
 
 	if reflect.ValueOf(a).Kind() != reflect.Struct && reflect.ValueOf(b).Kind() == reflect.Struct {
+		return false
+	}
+
+	if reflect.ValueOf(a).Kind() == reflect.Struct && reflect.ValueOf(b).Kind() == reflect.Struct {
+		if reflect.ValueOf(a).Type() == reflect.ValueOf(b).Type() {
+			if reflect.ValueOf(a).Type() == reflect.ValueOf(time.Time{}).Type() {
+				// only time is implemented yet
+				return true
+			}
+			return false
+		}
 		return false
 	}
 

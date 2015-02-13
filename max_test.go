@@ -1,9 +1,11 @@
 package validator
 
 import (
-// "fmt"
-// "github.com/stretchr/testify/assert"
-// "testing"
+	// "fmt"
+	"github.com/stretchr/testify/assert"
+	// "reflect"
+	"testing"
+	"time"
 )
 
 // func TestMaxMixAndMatch(t *testing.T) {
@@ -54,3 +56,26 @@ import (
 // func makeInterface(i interface{}) interface{} {
 // 	return i
 // }
+
+type testStr struct{}
+
+func TestTypeAllow(t *testing.T) {
+	assert := assert.New(t)
+
+	a := time.Now()
+	b := time.Now()
+
+	assert.True(typeAllow(a, b))
+
+	c := int(7)
+
+	assert.False(typeAllow(a, c))
+
+	d := int64(7)
+
+	assert.True(typeAllow(c, d))
+
+	e := testStr{}
+
+	assert.False(typeAllow(e, b))
+}
