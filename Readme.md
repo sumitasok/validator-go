@@ -78,4 +78,4 @@ TO-DO:
 
 - add check compatibility
 
-I am thankful for https://github.com/jamieomatthews/validation as this package is inspired on it when it comes to the Validator chained signature and type aggregation for matching"
+I am thankful to https://github.com/jamieomatthews/validation, as this package is inspired on it, when it comes to the Validator chained signature and type aggregation for matching"
