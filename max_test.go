@@ -6,6 +6,10 @@ import (
 	"testing"
 )
 
+var (
+	wont = "cannot be applied on this object"
+)
+
 // 	Int8Value := int8(17) // -128 to 127, Signed 8-bit integer, bytes per element 1
 // 	// Int16Value := int16(7) -32,768 to 32,767, Signed 16-bit integer, bytes per element 2
 // 	// Int32Value := int32(7) -2,147,483,648 to 2,147,483,647, Signed 32-bit integer, bytes per element 4
@@ -50,7 +54,7 @@ func TestTypeAllow(t *testing.T) {
 	}
 }
 
-func TestErrorMessages(t *testing.T) {
+func TestMaxErrorMessages(t *testing.T) {
 	// all error messages on max condition failed
 	assert := assert.New(t)
 
@@ -63,6 +67,27 @@ func TestErrorMessages(t *testing.T) {
 			v := On(cond.Obj)
 			m.validate(v, s.V)
 			assert.Equal(s.E, v.Error().Error(), fmt.Sprintf("%d %s %d", i, op, j))
+		}
+	}
+}
+
+func TestMinSuccess(t *testing.T) {
+	// all error messages on max condition failed
+	assert := assert.New(t)
+
+	op := "maxFail"
+
+	m := Min{}
+
+	for i, cond := range tprobabs {
+		for j, s := range cond.Ops[op] {
+			v := On(cond.Obj)
+			m.validate(v, s.V)
+			if s.E == wont {
+				assert.Equal(wont, v.Error().Error())
+			} else {
+				assert.Empty(v.Error(), fmt.Sprintf("%d %s %d", i, "minSuccess", j))
+			}
 		}
 	}
 }
