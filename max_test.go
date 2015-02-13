@@ -63,8 +63,8 @@ func TestTypeAllow(t *testing.T) {
 	op := "allowSuccess"
 
 	for i, c := range tprobabs {
-		for j, k := range c.Ops["allowSuccess"] {
-			assert.True(typeAllow(c.Obj, k.V), fmt.Sprintf("%d %s %d", i, op, j))
+		for j, k := range c.Ops["allow"] {
+			assert.Equal(k.A, typeAllow(c.Obj, k.V), fmt.Sprintf("%d %s %d", i, op, j))
 		}
 	}
 }

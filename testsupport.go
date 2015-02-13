@@ -9,6 +9,7 @@ var (
 	tString = "Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing" // reflect.String
 	tInt    = int(127)                                                                                                                                                                                                                                                         // reflect.Int
 	tTime   = time.Now()                                                                                                                                                                                                                                                       // time.Time
+	tStruct = testStr{}
 
 	tprobabs = tProbabilities{
 		tObjType{tArray,
@@ -30,9 +31,12 @@ var (
 			}},
 		},
 		tObjType{tTime,
-			tOps{"allowSuccess": []tProp{
-				tProp{V: tTime, E: "", A: true},
-			}},
+			tOps{"allow": []tProp{
+				tProp{V: tTime, A: true},
+				tProp{V: int(7), A: false},
+				tProp{V: tStruct, A: false},
+			},
+			},
 		},
 	}
 )
