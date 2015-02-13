@@ -42,7 +42,7 @@ func TestMaxErrorMessages(t *testing.T) {
 }
 
 func TestMinSuccess(t *testing.T) {
-	// all error messages on max condition failed
+	// successful min computation
 	assert := assert.New(t)
 
 	op := "maxFail"
