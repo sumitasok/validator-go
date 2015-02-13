@@ -1,7 +1,6 @@
 package validator
 
 import (
-	// "fmt"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
@@ -91,11 +90,6 @@ func TestMaxTime(t *testing.T) {
 	assert.Equal("time should be before 2010-11-10 23:00:00 +0000 UTC",
 		v6.Error().Error())
 }
-
-// tbef := time.Date(2010, time.November, 10, 23, 0, 0, 0, time.UTC)
-
-// v2tint := On(123).Max(tbef)
-// assert.Equal("non-evaluable comparators provided", v2tint.Error().Error())
 
 func TestMatch(t *testing.T) {
 	assert := assert.New(t)

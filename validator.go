@@ -2,8 +2,6 @@ package validator
 
 import (
 	"errors"
-	// "fmt"
-	"reflect"
 	"time"
 )
 
@@ -107,13 +105,4 @@ func (v *Validator) Add(msg string, customMsg ...string) {
 func (v *Validator) Key(name string) *Validator {
 	v.KeyName = name
 	return v
-}
-
-func (v *Validator) CheckCompatibility(obj interface{}) bool {
-	if reflect.ValueOf(v.Object).Kind() != reflect.ValueOf(obj).Kind() {
-		v.Add("non-evaluable comparators provided")
-		return false
-	} else {
-		return true
-	}
 }
