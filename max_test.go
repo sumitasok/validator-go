@@ -70,6 +70,7 @@ func TestTypeAllow(t *testing.T) {
 }
 
 func TestErrorMessages(t *testing.T) {
+	// all error messages on max condition failed
 	assert := assert.New(t)
 
 	op := "maxFail"

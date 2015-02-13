@@ -7,8 +7,10 @@ import (
 var (
 	tArray  = []string{"Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing"}                                                                                                                                                                                  // reflect.Slice
 	tString = "Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing" // reflect.String
-	tInt    = int(127)                                                                                                                                                                                                                                                         // reflect.Int
-	tTime   = time.Now()                                                                                                                                                                                                                                                       // time.Time
+
+	tInt    = int(127)   // reflect.Int
+	tFloat  = 1.1        // reflect.Float
+	tTime   = time.Now() // time.Time
 	tStruct = testStr{}
 
 	tprobabs = tProbabilities{
@@ -26,16 +28,38 @@ var (
 			}},
 		},
 		tObjType{tInt,
-			tOps{"maxFail": []tProp{
-				tProp{V: int8(7), E: "maximum 7 is allowed", A: true},
-			}},
+			tOps{
+				"maxFail": []tProp{
+					tProp{V: int8(7), E: "maximum 7 is allowed", A: true},
+				},
+				"allow": []tProp{
+					tProp{V: tTime, A: false},
+					tProp{V: int(7), A: true},
+					tProp{V: tStruct, A: false},
+					tProp{V: int64(7), A: true},
+				},
+			},
+		},
+		tObjType{tFloat,
+			tOps{
+				"maxFail": []tProp{
+					tProp{V: tTime, E: "cannot be applied on this object", A: false},
+				},
+				"allow": []tProp{
+					tProp{V: tTime, A: false},
+					tProp{V: int(7), A: true},
+					tProp{V: tStruct, A: false},
+				},
+			},
 		},
 		tObjType{tTime,
-			tOps{"allow": []tProp{
-				tProp{V: tTime, A: true},
-				tProp{V: int(7), A: false},
-				tProp{V: tStruct, A: false},
-			},
+			tOps{
+				"allow": []tProp{
+					tProp{V: tTime, A: true},
+					tProp{V: int(7), A: false},
+					tProp{V: tStruct, A: false},
+					tProp{V: int64(7), A: false},
+				},
 			},
 		},
 	}
