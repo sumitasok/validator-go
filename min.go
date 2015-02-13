@@ -11,6 +11,11 @@ type Min struct {
 }
 
 func (m *Min) validate(v *Validator, minI interface{}, msg ...string) {
+	if !typeAllow(v.Object, minI) {
+		v.Add("cannot be applied on this object")
+		return
+	}
+
 	switch reflect.ValueOf(v.Object).Kind() {
 	case reflect.Array, reflect.String:
 		if min, ok := minI.(int); ok {
@@ -36,7 +41,7 @@ func (m *Min) validate(v *Validator, minI interface{}, msg ...string) {
 				v.Add("minimum "+strconv.Itoa(int(min))+" is required", msg...)
 			}
 		}
-	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+	case reflect.Map, reflect.Slice:
 		if min, ok := minI.(int); ok {
 			if reflect.ValueOf(v.Object).Len() < min {
 				v.Add("minimum "+strconv.Itoa(min)+" numbers required", msg...)

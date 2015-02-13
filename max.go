@@ -51,8 +51,6 @@ func (m *Max) validate(v *Validator, maxI interface{}, msg ...string) {
 		return
 	}
 
-	fmt.Println(reflect.ValueOf(v.Object).Kind())
-
 	switch reflect.ValueOf(v.Object).Kind() {
 	case reflect.Array, reflect.String:
 		max := reflect.ValueOf(maxI).Int()
@@ -78,7 +76,7 @@ func (m *Max) validate(v *Validator, maxI interface{}, msg ...string) {
 			defaultMsg := fmt.Sprintf("maximum %x is allowed", max)
 			v.Add(defaultMsg, msg...)
 		}
-	case reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+	case reflect.Map, reflect.Slice:
 		max := reflect.ValueOf(maxI).Int()
 		if int64(reflect.ValueOf(v.Object).Len()) > max {
 			defaultMsg := fmt.Sprintf("maximum %x numbers allowed", max)

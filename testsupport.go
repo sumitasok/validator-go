@@ -26,7 +26,7 @@ var (
 					tProp{V: int16(128), E: "maximum 128 characters allowed", A: true},
 					tProp{V: int32(128), E: "maximum 128 characters allowed", A: true},
 					tProp{V: int64(128), E: "maximum 128 characters allowed", A: true},
-					tProp{V: float32(128.5), E: "maximum 128 characters allowed", A: true},
+					tProp{V: float32(128.5), E: "cannot be applied on this object", A: true},
 				},
 				"allow": []tProp{
 					tProp{V: float32(7), A: false},
