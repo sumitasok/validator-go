@@ -10,11 +10,14 @@ alt:
 v := On("string").Key("name").Required("custom message required").Min(7, "min custom message").Max(10, "max custom message")
 ```
 
+
+#### Errors
+
 ```
-v.Errors()
+v.Errors
 ```
 
-returns
+returns all errors
 
 ```
 []error{
@@ -22,6 +25,11 @@ returns
 	errors.New("name: min custom message")
 }
 ```
+
+```
+v.Error()
+```
+returns first `error` or `nil`
 
 #### Match
 
