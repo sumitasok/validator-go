@@ -5,6 +5,12 @@ import (
 )
 
 var (
+	wont = "cannot be applied on this object"
+)
+
+type testStr struct{}
+
+var (
 	tArray  = []string{"Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing"}                                                                                                                                                                                  // reflect.Slice
 	tString = "Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing Lorem ipsum dolor sit amet, consectetur adipiscing" // reflect.String
 

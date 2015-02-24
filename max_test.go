@@ -6,12 +6,6 @@ import (
 	"testing"
 )
 
-var (
-	wont = "cannot be applied on this object"
-)
-
-type testStr struct{}
-
 func TestTypeAllow(t *testing.T) {
 	assert := assert.New(t)
 
